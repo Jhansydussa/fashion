@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Registration Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script type="text/javascript">
+        function OrderClick(){
+            //customer info
+            document.getElementById('lblname') .innerHTML= document.getElementById('txtname').value
+            document.getElementById('lbldate').innerHTML = document.getElementById('txtdate').value
+
+             var totalDays = document.getElementById('txtdays').value
+             document.getElementById('lbldays').innerHTML=totalDays
+            
+             var totalPeople = document.getElementById('txtPeople').value
+             document.getElementById('lblPeople').innerHTML = totalPeople
+           
+            var RoomType = "";
+            var RoomCost = 0;
+            var Amenities = "";
+            var AmenitiesCost = 0;
+            var Total = 0;
+             //room type
+            var delux = document.getElementById("delux");
+            var sight = document.getElementById("sight");
+             
+            if(delux.checked){
+                RoomType = delux.value;
+                RoomCost = 2500;
+            }
+            if(sight.checked){
+                RoomType = sight.value;
+                RoomCost = 4000;
+
+            }
+            //checked box
+            var AcClass = document.getElementById("AcClass");
+            var LockerClass = document.getElementById("LockerClass");
+           
+            if(AcClass.checked){
+                Amenities += AcClass.value + "<br>";
+                AmenitiesCost = 1000;
+                RoomCost = (RoomCost+AmenitiesCost)*totalDays;
+            }
+            if(LockerClass.checked){
+                Amenities += LockerClass.value + "<br>";
+                AmenitiesCost = 300;
+                RoomCost =  (RoomCost+AmenitiesCost)*totalDays;
+            }     
+           
+            //Advance
+            var advanceAmount = document.getElementById('advanceAmount').value
+            
+            //(condition) ? true  : false
+      // Total = (totalPeople == 1 || totalPeople == 2) ? roomTypeCost
+      //   : roomTypeCost + (totalPeople - 2) * 1000
+     
+      if (totalPeople === 1 || totalPeople === 2) {
+        Total = RoomCost
+      } else {
+
+        Total = RoomCost + (totalPeople - 2) * 1000
+      }
+      var due  =Total-advanceAmount;
+
+             document.getElementById('lblRoomtype').innerHTML = RoomType
+             document.getElementById('lblAmenities').innerHTML = Amenities
+             document.getElementById('lbltotal').innerHTML = Total
+             document.getElementById('lbladvance').innerHTML = advanceAmount
+             document.getElementById('lbldue').innerHTML = "&#8377;" + due + "/-";
+
+           
+        }
+    </script>
+</head>
+<body class="">
+    <div class="container-fluid border border-4 border-danger mt-4 me-4 bg-warning">
+        <h1 class="text-center bg-warning border bb-4 border-dark mt-4 ">Hotel Registration Form</h1>
+        <h3 class="text-center bg-danger">Customer Info</h3>
+        <form class="">
+            <label for="Name">Customer Name</label>
+            <input type="text" class="form-control" required id="txtname">
+            <label for="Mobile" id="txtmobile">Mobile No </label>
+            <input type="number" placeholder="91-" id="mobile" class="form-control">
+            <label for="Date">Check In Date</label>
+            <input type="Date" class="form-control" id="txtdate">
+            <label for="Days">Total No of Days</label>
+            <input type="number" class="form-control" id="txtdays">
+            <label for="Persons">Total No of Persons</label>
+            <input type="Number" class="form-control" id="txtPeople">
+        </form>
+        <h3 class="text-center bg-danger mt-4">Select Room Type</h3>
+        <div class="d-flex justify-content-around">
+            <div >
+                <img src="./Images/delux.jpg"><br>
+                <input type="radio" class="form-switch" name="roomtype" value="Delux Room" id="delux"> Delux Room &#8377 2500/-(Per Day)
+            </div>
+            <div>
+                 <img src="./Images/sight room.jpg" width="200" height="120"><br>
+                 <input type="radio" class="form-check-input" name="roomtype" value="Suite Room" id="sight"> Suite Room &#8377 4000/-(Per Day)
+            </div>
+        </div>
+        <h3 class="text-center bg-danger mt-4">select Amenities</h3>
+        <div class="d-flex justify-content-around">
+           <div class=""> 
+            <img src="./Images/ac romm.jpg" width="180" height="120"><br>
+            <input type="checkbox" class="form-check-input" value="A/C" id="AcClass"> A/C &#8377 1000/-(Per Day)</div>
+            <div class="">
+            <img src="./Images/locker room.jpg" width="200" height="120"><br>
+            <input type="checkbox" class="form-switch" value="Locker" id="LockerClass"> Locker &#8377 300/-(Per Day)
+            </div>
+         </div>
+         <h3 class="text-center bg-danger mt-4">Advance Amount</h3>
+         <dl>
+            <dt>Advance Amount</dt>
+            <dd><input type="number" id="advanceAmount"><span style="color:red;">*For Room Booking Pay Advance Minimum ₹1000/-</span></dd>
+         </dl>
+         <div>
+            <button data-bs-target="#data" data-bs-toggle="modal" class="btn btn-danger w-100" onclick="OrderClick()">Place Order</button>
+         </div>
+         <div class="modal fade" id="data">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="text-center  text-success"> Your Bill <Details></Details></h1>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-5"> Customer Name :</dt>
+                    <dd class="col-7" id="lblname"></dd>
+
+                    <dt class="col-5">Check in Date :</dt>
+                    <dd class="col-7" id="lbldate"></dd>
+
+                    <dt class="col-5">Total No. of Days :</dt>
+                    <dd class="col-7" id="lbldays"></dd>
+
+                    <dt class="col-5">Total No. of People :</dt>
+                    <dd class="col-7" id="lblPeople"></dd>
+
+                    <dt class="col-5">Room type :</dt>
+                    <dd class="col-7" id="lblRoomtype"></dd>
+
+                    <dt class="col-5">Amenities :</dt>
+                    <dd class="col-7" id="lblAmenities"></dd>
+
+                    <dt class="col-5">Total Amount :</dt>
+                    <dd class="col-7" id="lbltotal"></dd>
+
+                    <dt class="col-5">Advance :</dt>
+                    <dd class="col-7" id="lbladvance"></dd>
+
+                    <dt class="col-5">Balance :</dt>
+                    <dd class="col-7" id="lbldue"></dd>
+
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" data-bs-dismiss="modal">OK</button>
+            </div>
+            </div>
+        </div>
+          
+    </div>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>
